@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:55060/",
-      "sslPort": 44390
+      "sslPort": 0
     }
   },
   "profiles": {
@@ -13,8 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "nativeDebugging": true
+      }
     },
     "BlazorMovies.Server": {
       "commandName": "Project",
