@@ -1,35 +1,37 @@
 ﻿@page "/movies/edit/{MovieId:int}"
+@inject IMoviesRepository moviesRepository
+@inject NavigationManager navManager
+
 
 <h3>Edit Movie</h3>
 
 @if (Movie != null)
 {
     <MovieForm Movie="Movie" OnValidSubmit="Edit" NotSelectedGenres="NotSelectedGenres"
-               SelectedGenres="SelectedGenres"/>
+               SelectedGenres="SelectedGenres" SelectedActors="SelectedActors"/>
 }
 
 @code {
     [Parameter] public int MovieId { get; set; }
     private Movie Movie;
 
-    private List<Genre> NotSelectedGenres = new List<Genre>()
-    {
-        new Genre(){Id = 2, Name = "Comedy"},
-        new Genre(){Id = 3, Name = "Drama"}
-    };
+    private List<Genre> NotSelectedGenres;
+    private List<Genre> SelectedGenres;
+    private List<Person> SelectedActors;
 
-    private List<Genre> SelectedGenres = new List<Genre>()
+    protected async override Task OnInitializedAsync()
     {
-        new Genre(){Id = 1, Name = "Action"}
-    };
+        var model = await moviesRepository.GetMovieForUpdate(MovieId);
+        Movie = model.Movie;
+        NotSelectedGenres = model.NotSelectedGenres;
+        SelectedActors = model.Actors;
+        SelectedGenres = model.SelectedGenres;
 
-    protected override void OnInitialized()
-    {
-        Movie = new Movie() { Id = MovieId, Title = "My Movie" };
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("editing the movie...");
+        await moviesRepository.UpdateMovie(Movie);
+        navManager.NavigateTo($"movie/{MovieId}/{Movie.Title.Replace(" ","-")}");
     }
 }

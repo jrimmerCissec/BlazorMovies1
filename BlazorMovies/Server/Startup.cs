@@ -1,3 +1,4 @@
+using AutoMapper;
 using BlazorMovies.Server.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,9 +25,12 @@ namespace BlazorMovies.Server
             services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            // services.AddScoped<IFileStorageService, InAppStorageService>();
-            services.AddScoped<IFileStorageService, AzureStorageService>();
-            //services.AddHttpContextAccessor();
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<IFileStorageService, InAppStorageService>();
+           //services.AddScoped<IFileStorageService, AzureStorageService>();
+          
 
 
             services.AddMvc()

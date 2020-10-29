@@ -15,7 +15,7 @@ namespace BlazorMovies.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -93,13 +93,10 @@ namespace BlazorMovies.Server.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GenresId")
+                    b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GenreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MovieId", "GenresId");
+                    b.HasKey("MovieId", "GenreId");
 
                     b.HasIndex("GenreId");
 
@@ -134,13 +131,13 @@ namespace BlazorMovies.Server.Migrations
             modelBuilder.Entity("BlazorMovies.Shared.Entities.MoviesActors", b =>
                 {
                     b.HasOne("BlazorMovies.Shared.Entities.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("MoviesActors")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BlazorMovies.Shared.Entities.Person", "Person")
-                        .WithMany()
+                        .WithMany("MoviesActors")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -150,7 +147,9 @@ namespace BlazorMovies.Server.Migrations
                 {
                     b.HasOne("BlazorMovies.Shared.Entities.Genre", "Genre")
                         .WithMany("MoviesGenres")
-                        .HasForeignKey("GenreId");
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BlazorMovies.Shared.Entities.Movie", "Movie")
                         .WithMany("MoviesGenres")

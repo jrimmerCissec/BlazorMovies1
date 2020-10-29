@@ -7,6 +7,13 @@ namespace BlazorMovies.Client.Helpers
 {
     public interface IHttpService
     {
+        Task<HttpResponseWrapper<object>> Delete(string url);
+        Task<HttpResponseWrapper<T>> Get<T>(string url);
+
+        // this seems like it could be a problem moving forward.... 
         Task<HttpResponseWrapper<object>> Post<T>(string url, T data);
+      
+        Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data);
+        Task<HttpResponseWrapper<object>> Put<T>(string url, T data);
     }
 }

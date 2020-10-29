@@ -1,10 +1,11 @@
 ﻿@inject IJSRuntime js
+@inject IMoviesRepository moviesRepository
 
 <div class="movies-container">
     <GenericList List="Movies">
         <ElementTemplate Context="movie">
             <IndividualMovie Movie="movie"
-                             DeleteMovie="DeleteMovie" />
+                             DeleteMovie="DeleteMovie" @key="movie.Id" />
         </ElementTemplate>
     </GenericList>
 </div>
@@ -19,6 +20,7 @@
 
         if (confirmed)
         {
+            await moviesRepository.DeleteMovie(movie.Id);
             Movies.Remove(movie);
         }
     }

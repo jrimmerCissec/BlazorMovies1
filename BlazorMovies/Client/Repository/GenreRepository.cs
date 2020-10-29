@@ -19,6 +19,28 @@ namespace BlazorMovies.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<List<Genre>> GetGenres()
+        {
+            var response = await httpService.Get<List<Genre>>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+             }
+            return response.Response;
+        }
+
+        public async Task<Genre> GetGenre(int Id)
+        {
+
+            //took the list out of this sectio which i believe is right. 
+            var response = await httpService.Get<Genre>($"{url}/{Id}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+
+        }
         public async Task CreateGenre(Genre genre)
         {
             var response = await httpService.Post(url, genre);
@@ -28,6 +50,23 @@ namespace BlazorMovies.Client.Repository
             }
         }
 
+        public async Task UpdateGenre(Genre genre)
+        {
+            var response = await httpService.Put(url, genre);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
 
+        public async Task DeleteGenre(int Id)
+        {
+            
+            var response = await httpService.Delete($"{url}/{Id}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
     }
 }

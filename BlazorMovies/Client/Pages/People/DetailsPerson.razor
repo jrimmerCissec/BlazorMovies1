@@ -1,0 +1,57 @@
+﻿@page "/person/{PersonId:int}"
+@inject IPersonRepository personRepository
+
+
+@if (model == null)
+{
+    <text>Loading... </text>
+}
+else
+{
+<h2>@model.Person.Name (Born: @model.Person.DateOfBirth.Value.ToString("dd MMM yyyy"))</h2>
+  
+    <div style="display: flex">
+        <span style="display: inline-block; margin-right: 5px;"><img src="@model.Person.Picture" style="width: 225px; height: 315px;"/></span>
+        
+    </div>
+    <div style="margin-top: 10px;">
+        <h3>Summary</h3>
+        <div>
+            <RenderMarkdown MarkdownContent="@model.Person.Biography"></RenderMarkdown>
+        </div>
+    </div>
+    <div style="margin-top: 10px;">
+        <h3>Actors</h3>
+        <div style="display:flex">
+            @foreach(var movie in model.Movies)
+            {
+                <div style="margin-bottom: 2px;">
+                    <img style="width: 50px;" src="@movie.Poster"/>
+                    <span style="display: inline-block; width : 200px;"><a href="/movie/@movie.Title.Replace(" ","-")">@movie.Title</a></span>
+                    <span  style="display: inline-block; width : 45px;">...</span>
+                </div>
+            }
+        </div>
+
+    </div>
+
+}
+
+
+
+@code {
+    [Parameter] public int PersonId { get; set; }
+    // [Parameter] public string PersonName { get; set; }
+    DetailsPersonDTO model;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        
+
+        model = await personRepository.GetDetailsPersonDTO(PersonId);
+
+
+    }
+}
