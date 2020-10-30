@@ -56,7 +56,7 @@ namespace BlazorMovies.Client.Repository
 
         public async Task<DetailsPersonDTO> GetDetailsPersonDTO(int id)
         {
-           
+            Console.WriteLine($"GetDetailsPersonDTO called ID = {id} and URL = {url}");
             return await httpService.GetHelper<DetailsPersonDTO>($"{url}/{id}");
         }
 

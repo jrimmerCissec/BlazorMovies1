@@ -16,7 +16,7 @@ namespace BlazorMovies.Client.Helpers
             {
                 throw new ApplicationException(await response.GetBody());
             }
-
+            Console.WriteLine($"Get Helper Sevice extenstion method. request is {response.Success}");
             return response.Response;
         }
 

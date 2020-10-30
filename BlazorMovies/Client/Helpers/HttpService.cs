@@ -24,10 +24,11 @@ namespace BlazorMovies.Client.Helpers
         public async Task<HttpResponseWrapper<T>> Get<T>(string url)
         {
             var responseHTTP = await httpClient.GetAsync(url);
-            
+            Console.WriteLine($"in httpservice url = {url} response status = {responseHTTP.IsSuccessStatusCode}");
             if (responseHTTP.IsSuccessStatusCode)
             {
                 var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
+                
                 return new HttpResponseWrapper<T>(response, true, responseHTTP);
             }else
             {
@@ -57,7 +58,9 @@ namespace BlazorMovies.Client.Helpers
 
         private async Task<T> Deserialize<T> (HttpResponseMessage httpResponse, JsonSerializerOptions options)
         {
+            
             var responseString = await httpResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"Deserialize with HTTP response responsestring = {responseString}");
             return JsonSerializer.Deserialize<T>(responseString, options);
         }
 

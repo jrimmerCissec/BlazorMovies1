@@ -48,8 +48,8 @@ else
     protected async override Task OnInitializedAsync()
     {
 
-        
 
+        Console.WriteLine("OnIntializedAsync() from detailspeson.razor");
         model = await personRepository.GetDetailsPersonDTO(PersonId);
 
 

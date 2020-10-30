@@ -55,15 +55,33 @@ namespace BlazorMovies.Server.Controllers
             return await queryable.Paginate(paginationDTO).ToListAsync();
         }
 
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Person>> Get(int Id)
+        //{
+           
+           
+        //   var person = await context.People.FirstOrDefaultAsync(x => x.Id == Id);
+        //    if (person == null) { return NotFound(); }
+        //    return person; 
+        //}
+
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> Get(int Id)
+        public async Task<ActionResult<DetailsPersonDTO>> Get(int Id)
         {
-            Console.WriteLine($"we made it to person controller with ID = {Id}");
-            var person = await context.People.Include(x => x.MoviesActors).ThenInclude(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id);
-            /// original code ----- var person = await context.People.FirstOrDefaultAsync(x => x.Id == Id);
+
+            
+            var person = await context.People.Include(x => x.MoviesActors).ThenInclude(x => x.Movie).FirstOrDefaultAsync(x => x.Id == Id); 
             if (person == null) { return NotFound(); }
-            return person; 
+
+            var model = new DetailsPersonDTO();
+            model.Person = person;
+
+            Console.WriteLine($"THis is the person we are looking for {person.ToString()}");
+            
+            return model;
         }
+
 
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
